@@ -9,7 +9,17 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        //comment
+        $values = array("Study Description",
+                        "Protocol Name",
+                        "Study Date",
+                        "Patient's Birth Date",
+                        "Patient ID",
+                        "Patient's Age",
+                        "Patient's Sex",
+                        "Patient's Size",
+                        "Patient's Weight"
+                        );
+
         $kernel = $this->get('kernel');
         $path = $kernel->locateResource('@SantaAutoBundle/Resources/data');
 
@@ -17,10 +27,12 @@ class DefaultController extends Controller
         $finder->files()->in($path);
 
         foreach($finder as $file){
-            $contents[] = $file->getContents();
-        }
-        \Doctrine\Common\Util\Debug::dump($contents);
+            $contents = $file->getContents();
+            $data = $this->get("reader")->readValues($contents, $values);
+            break;
 
-        return $this->render('SantaAutoBundle:Default:index.html.twig');
+        }
+
+        return $this->render('SantaAutoBundle:Default:index.html.twig', array('data' => $data));
     }
 }
