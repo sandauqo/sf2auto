@@ -1,0 +1,4 @@
+santa_auto:
+    resource: "@SantaAutoBundle/Resources/config/routing.yml"
+    prefix:   /
+

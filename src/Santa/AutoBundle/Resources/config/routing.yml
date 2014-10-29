@@ -1,0 +1,3 @@
+santa_auto_homepage:
+    path:     /
+    defaults: { _controller: SantaAutoBundle:Default:index }
