@@ -9,7 +9,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-
+        //comment
         $kernel = $this->get('kernel');
         $path = $kernel->locateResource('@SantaAutoBundle/Resources/data');
 
