@@ -1,4 +1,8 @@
 data:
-{% for d in data %}
-{{ d }}
+{% for dat in data %}
+    {% for d in dat %}
+
+        {{ d }}
+
+    {% endfor %}
 {% endfor %}

@@ -74,3 +74,5 @@ swiftmailer:
 services:
     reader:
         class: Santa\AutoBundle\Services\Reader
+    excel:
+        class: Santa\AutoBundle\Services\Excel

@@ -1,3 +1,7 @@
 santa_auto_homepage:
     path:     /
     defaults: { _controller: SantaAutoBundle:Default:index }
+
+santa_auto_excel:
+    path:     /excel
+    defaults: { _controller: SantaAutoBundle:Default:excel }

@@ -17,7 +17,8 @@ class DefaultController extends Controller
                         "Patient's Age",
                         "Patient's Sex",
                         "Patient's Size",
-                        "Patient's Weight"
+                        "Patient's Weight",
+                        "Exposure Time"
                         );
 
         $kernel = $this->get('kernel');
@@ -27,12 +28,37 @@ class DefaultController extends Controller
         $finder->files()->in($path);
 
         foreach($finder as $file){
-            $contents = $file->getContents();
-            $data = $this->get("reader")->readValues($contents, $values);
-            break;
-
+            $id = $this->getFileNr($file->getRealpath());
+            $contents[$id] = $file->getContents();
         }
+
+        for ($i=1; $i<(count($contents)/2)+1; $i++){
+            $arejus[$i] = $contents[$i] . $contents[$i.'a'];
+            $data[] = $this->get("reader")->readValues($arejus[$i], $values);
+        }
+
+
+
+        $this->get('excel')->write($data);
+
 
         return $this->render('SantaAutoBundle:Default:index.html.twig', array('data' => $data));
     }
+
+    public function excelAction(){
+
+        $this->get('excel')->write();
+
+        return $this->render('SantaAutoBundle:Default:excel.html.twig');
+    }
+
+
+    private function getFileNr($string){
+        $start = strrpos($string, '\\') + 1;
+        $end = strrpos($string, '-');
+        return substr($string, $start, $end-$start);
+    }
+
+
+
 }
