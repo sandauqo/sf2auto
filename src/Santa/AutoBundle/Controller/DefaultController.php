@@ -18,7 +18,14 @@ class DefaultController extends Controller
                         "Patient's Sex",
                         "Patient's Size",
                         "Patient's Weight",
-                        "Exposure Time"
+                        "Single Collimation Width",
+                        "Total Collimation Width",
+                        "Spiral Pitch Factor",
+                        "KVP",
+                        "X-Ray Tube Current in",
+                        "Exposure Time",
+                        "CTDIvol",
+                        "DLP"
                         );
 
         $kernel = $this->get('kernel');
@@ -38,7 +45,7 @@ class DefaultController extends Controller
         }
 
 
-
+        //print_r($data);
         $this->get('excel')->write($data);
 
 

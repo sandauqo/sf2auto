@@ -29,14 +29,17 @@ class Excel {
         $excel->getActiveSheet()->SetCellValue('F3', 'Paciento ID');
         $excel->getActiveSheet()->SetCellValue('G3', 'Amžius');
         $excel->getActiveSheet()->SetCellValue('H3', 'Lytis');
-        $excel->getActiveSheet()->SetCellValue('I3', 'Ūgis');
-        $excel->getActiveSheet()->SetCellValue('J3', 'Svoris');
-        $excel->getActiveSheet()->SetCellValue('K3', 'KMI');
-        $excel->getActiveSheet()->SetCellValue('L3', 't, ms');
-        $excel->getActiveSheet()->SetCellValue('M3', 'U, kV');
-        $excel->getActiveSheet()->SetCellValue('N3', 'CTDI');
-        $excel->getActiveSheet()->SetCellValue('O3', 'DLP');
-        $excel->getActiveSheet()->SetCellValue('P3', 'Eff');
+        $excel->getActiveSheet()->SetCellValue('I3', 'Ūgis, m');
+        $excel->getActiveSheet()->SetCellValue('J3', 'Svoris, kg');
+        $excel->getActiveSheet()->SetCellValue('K3', 'KMI, kg/m^2');
+        $excel->getActiveSheet()->SetCellValue('L3', 'Sluoksnio storis, mm');
+        $excel->getActiveSheet()->SetCellValue('M3', 'Kolimacija, mm');
+        $excel->getActiveSheet()->SetCellValue('N3', '"Ptich"');
+        $excel->getActiveSheet()->SetCellValue('O3', 'U, kV');
+        $excel->getActiveSheet()->SetCellValue('P3', 'I, mA');
+        $excel->getActiveSheet()->SetCellValue('Q3', 't, ms');
+        $excel->getActiveSheet()->SetCellValue('R3', 'CTDI');
+        $excel->getActiveSheet()->SetCellValue('S3', 'DLP');
 
         $excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
@@ -53,10 +56,13 @@ class Excel {
         $excel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('O')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('P')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('Q')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('R')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('S')->setWidth(20);
 
-        $i = 4;
+        $k=0;
         foreach ($data as $dat){
-
+            $i = 4+$k*8;
             $tyrimo_data = substr($dat[2],0,4).'-'.substr($dat[2],4,2).'-'.substr($dat[2], 6,2);
 
             $gimimo_metai = substr($dat[3],0,4).'-'.substr($dat[3],4,2).'-'.substr($dat[3], 6,2);
@@ -84,20 +90,66 @@ class Excel {
             $excel->getActiveSheet()->SetCellValue('I'.$i, $dat[7]);
             $excel->getActiveSheet()->SetCellValue('J'.$i, $dat[8]);
             $excel->getActiveSheet()->SetCellValue('K'.$i, $KMI);
+            //cia array vertes
+            $j=0;
+            foreach($dat[9] as $da){
+                $excel->getActiveSheet()->SetCellValue('L'.($i+$j), round($da,2));
+                $j++;
+            }
+            $j=0;
+            foreach($dat[10] as $da){
+                $excel->getActiveSheet()->SetCellValue('M'.($i+$j), round($da,2));
+                $j++;
+            }
+            $j=0;
+            foreach($dat[11] as $da){
+                $excel->getActiveSheet()->SetCellValue('N'.($i+$j), round($da,2));
+                $j++;
+            }
+            $j=0;
+            foreach($dat[12] as $da){
+                $excel->getActiveSheet()->SetCellValue('O'.($i+$j), $da);
+                $j++;
+            }
+            $j=0;
+            foreach($dat[13] as $da){
+                $excel->getActiveSheet()->SetCellValue('P'.($i+$j), round($da/1000,2));
+                $j++;
+            }
+            $j=0;
+            foreach($dat[14] as $da){
+                $excel->getActiveSheet()->SetCellValue('Q'.($i+$j), $da);
+                $j++;
+            }
+            $j=0;
+            $vid=0;
+            foreach($dat[15] as $da){
+                $excel->getActiveSheet()->SetCellValue('R'.($i+$j), round($da,2));
+                $j++;
+                $vid+=$da;
+            }
 
-//            $excel->getActiveSheet()->SetCellValue('L'.$i, $dat[0]);
-//            $excel->getActiveSheet()->SetCellValue('M'.$i, $dat[0]);
-//            $excel->getActiveSheet()->SetCellValue('N'.$i, $dat[0]);
-//            $excel->getActiveSheet()->SetCellValue('O'.$i, $dat[0]);
-//            $excel->getActiveSheet()->SetCellValue('P'.$i, $dat[0]);
-            $i++;
+            $styleArray = array(
+                'font' => array(
+                    'bold' => true
+                )
+            );
+
+            $excel->getActiveSheet()->SetCellValue('R'.($i+$j), round(($vid/$j),2));
+            $sheet = $excel->getActiveSheet();
+            $sheet->getStyle('R'.($i+$j))->applyFromArray($styleArray);
+
+            $j=0;
+            $suma=0;
+            foreach($dat[16] as $da){
+                $excel->getActiveSheet()->SetCellValue('S'.($i+$j), round($da,2));
+                $j++;
+                $suma+=$da;
+            }
+            $excel->getActiveSheet()->SetCellValue('S'.($i+$j), round($suma,2));
+            $sheet->getStyle('S'.($i+$j))->applyFromArray($styleArray);
+            $k++;
         }
-
-
-
-
-
-
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . 'Duomenys' . '.xlsx"');
