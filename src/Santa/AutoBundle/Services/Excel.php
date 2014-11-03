@@ -87,8 +87,8 @@ class Excel {
             $excel->getActiveSheet()->SetCellValue('F'.$i, $dat[4]);
             $excel->getActiveSheet()->SetCellValue('G'.$i, $amzius);
             $excel->getActiveSheet()->SetCellValue('H'.$i, $dat[6]);
-            $excel->getActiveSheet()->SetCellValue('I'.$i, $dat[7]);
-            $excel->getActiveSheet()->SetCellValue('J'.$i, $dat[8]);
+            $excel->getActiveSheet()->SetCellValue('I'.$i, round($dat[7],2));
+            $excel->getActiveSheet()->SetCellValue('J'.$i, round($dat[8],2));
             $excel->getActiveSheet()->SetCellValue('K'.$i, $KMI);
             //cia array vertes
             $j=0;
@@ -108,7 +108,7 @@ class Excel {
             }
             $j=0;
             foreach($dat[12] as $da){
-                $excel->getActiveSheet()->SetCellValue('O'.($i+$j), $da);
+                $excel->getActiveSheet()->SetCellValue('O'.($i+$j), round($da,2));
                 $j++;
             }
             $j=0;
@@ -118,7 +118,7 @@ class Excel {
             }
             $j=0;
             foreach($dat[14] as $da){
-                $excel->getActiveSheet()->SetCellValue('Q'.($i+$j), $da);
+                $excel->getActiveSheet()->SetCellValue('Q'.($i+$j), round($da,2));
                 $j++;
             }
             $j=0;
