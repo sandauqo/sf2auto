@@ -76,7 +76,8 @@ class Excel {
             }
 
             if ($dat[7] !== false and $dat[8]!== false){
-                $KMI = round($dat[8]/($dat[7]*$dat[7]),1);
+                //$KMI = round($dat[8]/($dat[7]*$dat[7]),1);
+                $KMI = round($dat[8]/1);
             }else{
                 $KMI = false;
             }
@@ -135,7 +136,7 @@ class Excel {
                 )
             );
 
-            $excel->getActiveSheet()->SetCellValue('R'.($i+$j), round(($vid/$j),2));
+            $excel->getActiveSheet()->SetCellValue('R'.($i+$j), round(($vid/1),2));
             $sheet = $excel->getActiveSheet();
             $sheet->getStyle('R'.($i+$j))->applyFromArray($styleArray);
 

@@ -62,7 +62,7 @@ class DefaultController extends Controller
 
     private function getFileNr($string){
         $start = strrpos($string, '\\') + 1;
-        $end = strrpos($string, '-');
+        $end = strrpos($string, '.');
         return substr($string, $start, $end-$start);
     }
 

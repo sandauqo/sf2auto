@@ -17,25 +17,26 @@ class Reader {
 
     public function readValues($string, $values){
 
-        
+
         $return = array();
         $count = 1;
         foreach($values as $value){
             if ($count < 10){
 
 
-            $substring1 = strstr($string, $value);
+            $substring1 = strstr($string, $value.': ');
 
-            $substring2 = strstr($substring1, 'Value: ');
+            //$substring2 = strstr($substring1, 'Value: ');
 
-            $end = strpos($substring2, '(');
+            $start = strpos($substring1, ':');
+            $end = strpos($substring1, PHP_EOL);
 
-            $return[] = substr($substring2, 7, $end-7);
+            $return[] = substr($substring1, $start+2, $end-$start);
             }else{
 
                 if ($value === 'DLP'){
                     $sub_array = array();
-                    $string2 = strstr($string, 'File Meta');
+                    $string2 = strstr($string, 'Media Storage');
                     $kiek = substr_count($string2, 'CTDIvol');
                     $substring = strstr($string2, $value);
                     for ($i=0;$i<$kiek;$i++){
@@ -69,9 +70,11 @@ class Reader {
 
                     $string2 = strstr($substring, 'Value: '); //
 
-                    $end = strpos($string2, '(');
+                    $start = strpos($substring, ':');
 
-                    $sub_array[] = substr($string2, 7, $end-7);
+                    $end = strpos($string2, PHP_EOL);
+
+                    $sub_array[] = substr($string2, $start, $end-$start);
 
                 }$return[] = $sub_array;
             }
