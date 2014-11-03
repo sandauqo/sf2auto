@@ -17,6 +17,7 @@ class Reader {
 
     public function readValues($string, $values){
 
+        //test
         $return = array();
         $count = 1;
         foreach($values as $value){
