@@ -15,36 +15,38 @@ class Reader {
 
 
 
-    public function readValues($string, $values){
+    public function readValues($string, $values, $number){
 
 
-        $return = array();
+        $return[] = $number;
         $count = 1;
+        $kiek_check = false;
+        $kmi_check = false;
         foreach($values as $value){
             if ($count < 10){
 
-
             $substring1 = strstr($string, $value.': ');
-
-            //$substring2 = strstr($substring1, 'Value: ');
 
             $start = strpos($substring1, ':');
             $end = strpos($substring1, PHP_EOL);
 
-            $return[] = substr($substring1, $start+2, $end-$start);
+            $return[] = trim(substr($substring1, $start+2, $end-$start));
             }else{
+                if ($kmi_check === false){
+                    $return[] = round($return[9]/($return[8]*$return[8]),2);
+                    $kmi_check = true;
+                }
 
                 if ($value === 'DLP'){
                     $sub_array = array();
                     $string2 = strstr($string, 'Media Storage');
-                    $kiek = substr_count($string2, 'CTDIvol');
+                    $kiek = substr_count($string2, '0018,9345');
                     $substring = strstr($string2, $value);
                     for ($i=0;$i<$kiek;$i++){
                         $substring = strstr($substring, $value);
                         $substring = substr($substring, 1);
-                        //$return[] = $substring;
                         $a = strstr($substring, $value);
-                        $end = strpos($a, 'E');
+                        $end = strpos($a, PHP_EOL);
                         if ($end == false){
                             $sub_array[] = substr($a, 4);
                         }else{
@@ -53,28 +55,45 @@ class Reader {
                     }
                     $return[] = $sub_array;
 
+                    $sumret18 = 0;
+                    foreach($return[18] as $ret18){
+                        $sumret18+=$ret18;
+                    }
+                    $return[] = $sumret18;
+
+                    $vidret19=0;
+                    foreach($return[19] as $ret19){
+                        $vidret19+=$ret19;
+                    }
+                    $return[] = round($vidret19/$kiek,2);
                     break;
                 }
 
-                $string2 = strstr($string, 'File Meta');
-                $kiek = substr_count($string2, 'CTDIvol');
-                $position = strpos($string2, 'CTDIvol'); //pirmo CTDIvol vieta
+                $string2 = strstr($string, 'Media Storage');
+                $kiek = substr_count($string2, '0018,9345');
+                $position = strpos($string2, '0018,9345'); //pirmo CTDIvol vieta
                 $position_from_end = strlen($string2)-$position;
-                $start = strrpos($string2, 'Group Length', -$position_from_end);
+                $start = strrpos($string2, 'Code Value', -$position_from_end);
                 $string2 = substr($string2, $start);
+
+
+                if ($kiek_check === false){
+                    array_splice($return, 3, 0, array($kiek));
+                    $kiek_check = true;
+                }
+
 
                 $sub_array = array();
                 for ($i=0;$i<$kiek;$i++){
 
                     $substring = strstr($string2, $value);
+                    $string2 = strstr($substring, ': ');
 
-                    $string2 = strstr($substring, 'Value: '); //
 
-                    $start = strpos($substring, ':');
+                    $start = strpos($string2, ':');
 
                     $end = strpos($string2, PHP_EOL);
-
-                    $sub_array[] = substr($string2, $start, $end-$start);
+                    $sub_array[] = trim(substr($string2, $start+2, $end-$start));
 
                 }$return[] = $sub_array;
             }
