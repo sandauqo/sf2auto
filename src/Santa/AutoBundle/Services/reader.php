@@ -33,7 +33,11 @@ class Reader {
             $return[] = trim(substr($substring1, $start+2, $end-$start));
             }else{
                 if ($kmi_check === false){
+                    if ($return[8]==0){
+                        $return[] = '-';
+                    }else{
                     $return[] = round($return[9]/($return[8]*$return[8]),2);
+                    }
                     $kmi_check = true;
                 }
 
