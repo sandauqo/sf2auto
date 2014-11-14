@@ -42,6 +42,7 @@ class Reader {
                 }
 
                 if ($value === 'DLP'){
+                    $kiek=1;//default
                     $sub_array = array();
                     $string2 = strstr($string, 'Media Storage');
                     $kiek = substr_count($string2, '0018,9345');
