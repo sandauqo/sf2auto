@@ -157,6 +157,14 @@ class Excel {
             $excel->getActiveSheet()->SetCellValue('W'.$i, $dat[21]);
 
 
+            //laikinas
+
+            for ($k=1;$k<$dat[3];$k++){
+                $excel->getActiveSheet()->SetCellValue('C'.($i+$k), $dat[1]);
+            }
+
+
+            //laikinas
 
 
             $styleArray = array(
