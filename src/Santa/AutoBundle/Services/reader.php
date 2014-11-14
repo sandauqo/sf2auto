@@ -42,7 +42,6 @@ class Reader {
                 }
 
                 if ($value === 'DLP'){
-                    $kiek=1;//default
                     $sub_array = array();
                     $string2 = strstr($string, 'Media Storage');
                     $kiek = substr_count($string2, '0018,9345');
@@ -64,7 +63,11 @@ class Reader {
                     foreach($return[18] as $ret18){
                         $vidret18+=$ret18;
                     }
-                    $return[] = round($vidret18/$kiek, 2);
+                    if ($kiek==0){
+                        $return[] = '-';
+                    }else{
+                        $return[] = round($vidret18/$kiek, 2);
+                    }
 
                     $sumret19=0;
                     foreach($return[19] as $ret19){
