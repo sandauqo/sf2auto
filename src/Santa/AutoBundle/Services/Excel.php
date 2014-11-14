@@ -183,6 +183,46 @@ class Excel {
 
         }
 
+        $sheetId = 1;
+        $excel->createSheet(NULL, 1);
+        $excel->setActiveSheetIndex(1);
+        $excel->getActiveSheet()->setTitle('CTDI ir DLP');
+
+        $excel->getActiveSheet()->getStyle(
+            'B3:D3'
+        )->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_DOUBLE);
+
+        $excel->getActiveSheet()->getStyle('B3:D3')->getFont()->setSize(12)->setBold(true);
+
+        $excel->getActiveSheet()->getColumnDimension('B')->setWidth(5);
+        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(14);
+        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+
+        $excel->getActiveSheet()->SetCellValue('B3', 'Nr.');
+        $excel->getActiveSheet()->SetCellValue('C3', 'Mean CTDI');
+        $excel->getActiveSheet()->SetCellValue('D3', 'Total DLP');
+
+        $i=4;
+        foreach ($data as $dat){
+            $excel->getActiveSheet()->SetCellValue('B'.$i, $dat[0]);
+            $excel->getActiveSheet()->SetCellValue('C'.$i, $dat[20]);
+            $excel->getActiveSheet()->SetCellValue('D'.$i, $dat[21]);
+            $i++;
+        }
+
+        $styleArray = array(
+            'borders' => array(
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                ),
+            )
+        );
+
+        $excel->getActiveSheet()->getStyle('B4:D'.($i-1))->applyFromArray($styleArray);
+        unset($styleArray);
+
+        $excel->setActiveSheetIndex(0);
+
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . 'Duomenys' . '.xlsx"');
         header('Cache-Control: max-age=0');
