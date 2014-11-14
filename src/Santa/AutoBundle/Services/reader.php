@@ -55,17 +55,17 @@ class Reader {
                     }
                     $return[] = $sub_array;
 
-                    $sumret18 = 0;
+                    $vidret18 = 0;
                     foreach($return[18] as $ret18){
-                        $sumret18+=$ret18;
+                        $vidret18+=$ret18;
                     }
-                    $return[] = $sumret18;
+                    $return[] = round($vidret18/$kiek, 2);
 
-                    $vidret19=0;
+                    $sumret19=0;
                     foreach($return[19] as $ret19){
-                        $vidret19+=$ret19;
+                        $sumret19+=$ret19;
                     }
-                    $return[] = round($vidret19/$kiek,2);
+                    $return[] = $sumret19;
                     break;
                 }
 
