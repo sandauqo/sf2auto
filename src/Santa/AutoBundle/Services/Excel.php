@@ -29,7 +29,7 @@ class Excel {
             ->getAlignment()
             ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-
+        $excel->getActiveSheet()->setTitle('viskas');
 
         $excel->getActiveSheet()->getStyle(
             'B3:X3'
@@ -186,27 +186,73 @@ class Excel {
         $sheetId = 1;
         $excel->createSheet(NULL, 1);
         $excel->setActiveSheetIndex(1);
-        $excel->getActiveSheet()->setTitle('CTDI ir DLP');
+        $excel->getActiveSheet()->setTitle('rusiavimui');
 
         $excel->getActiveSheet()->getStyle(
-            'B3:D3'
+            'B3:O3'
         )->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_DOUBLE);
 
-        $excel->getActiveSheet()->getStyle('B3:D3')->getFont()->setSize(12)->setBold(true);
+        $excel->getActiveSheet()->getStyle('B3:O3')->getFont()->setSize(12)->setBold(true);
 
         $excel->getActiveSheet()->getColumnDimension('B')->setWidth(5);
-        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(14);
-        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+        $excel->getActiveSheet()->getColumnDimension('E')->setWidth(5);
+        $excel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $excel->getActiveSheet()->getColumnDimension('I')->setWidth(10);
+        $excel->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+        $excel->getActiveSheet()->getColumnDimension('K')->setWidth(10);
+        $excel->getActiveSheet()->getColumnDimension('L')->setWidth(11);
+        $excel->getActiveSheet()->getColumnDimension('M')->setWidth(14);
+        $excel->getActiveSheet()->getColumnDimension('N')->setWidth(14);
+        $excel->getActiveSheet()->getColumnDimension('O')->setWidth(15);
 
         $excel->getActiveSheet()->SetCellValue('B3', 'Nr.');
-        $excel->getActiveSheet()->SetCellValue('C3', 'Mean CTDI');
-        $excel->getActiveSheet()->SetCellValue('D3', 'Total DLP');
+        $excel->getActiveSheet()->SetCellValue('C3', 'Tyrimas');
+        $excel->getActiveSheet()->SetCellValue('D3', 'Protokolas');
+        $excel->getActiveSheet()->SetCellValue('E3', 'S');
+        $excel->getActiveSheet()->SetCellValue('F3', 'Tyrimo data');
+        $excel->getActiveSheet()->SetCellValue('G3', 'Gimimo metai');
+        $excel->getActiveSheet()->SetCellValue('H3', 'Paciento ID');
+        $excel->getActiveSheet()->SetCellValue('I3', 'Amžius');
+        $excel->getActiveSheet()->SetCellValue('J3', 'Lytis');
+        $excel->getActiveSheet()->SetCellValue('K3', 'Ūgis, m');
+        $excel->getActiveSheet()->SetCellValue('L3', 'Svoris, kg');
+        $excel->getActiveSheet()->SetCellValue('M3', 'KMI, kg/m^2');
+        $excel->getActiveSheet()->SetCellValue('N3', 'Mean CTDI');
+        $excel->getActiveSheet()->SetCellValue('O3', 'Total DLP');
 
         $i=4;
         foreach ($data as $dat){
+
+            $tyrimo_data = substr($dat[4],0,4).'-'.substr($dat[4],4,2).'-'.substr($dat[4], 6,2);
+
+            $gimimo_metai = substr($dat[5],0,4).'-'.substr($dat[5],4,2).'-'.substr($dat[5], 6,2);
+
+            if (substr($dat[7],0,2) == "00"){
+                $amzius = substr($dat[7],2,1);
+            }else if (substr($dat[7],0,1) == "0"){
+                $amzius = substr($dat[7],1,2);
+            }else{
+                $amzius = substr($dat[7],0,3);
+            }
+
             $excel->getActiveSheet()->SetCellValue('B'.$i, $dat[0]);
-            $excel->getActiveSheet()->SetCellValue('C'.$i, $dat[20]);
-            $excel->getActiveSheet()->SetCellValue('D'.$i, $dat[21]);
+            $excel->getActiveSheet()->SetCellValue('C'.$i, $dat[1]);
+            $excel->getActiveSheet()->SetCellValue('D'.$i, $dat[2]);
+            $excel->getActiveSheet()->SetCellValue('E'.$i, $dat[3]);
+            $excel->getActiveSheet()->SetCellValue('F'.$i, $tyrimo_data);
+            $excel->getActiveSheet()->SetCellValue('G'.$i, $gimimo_metai);
+            $excel->getActiveSheet()->SetCellValue('H'.$i, $dat[6]);
+            $excel->getActiveSheet()->SetCellValue('I'.$i, $amzius);
+            $excel->getActiveSheet()->SetCellValue('J'.$i, $dat[8]);
+            $excel->getActiveSheet()->SetCellValue('K'.$i, $dat[9]);
+            $excel->getActiveSheet()->SetCellValue('L'.$i, $dat[10]);
+            $excel->getActiveSheet()->SetCellValue('M'.$i, $dat[11]);
+            $excel->getActiveSheet()->SetCellValue('N'.$i, $dat[20]);
+            $excel->getActiveSheet()->SetCellValue('O'.$i, $dat[21]);
             $i++;
         }
 
@@ -218,7 +264,7 @@ class Excel {
             )
         );
 
-        $excel->getActiveSheet()->getStyle('B4:D'.($i-1))->applyFromArray($styleArray);
+        $excel->getActiveSheet()->getStyle('B4:O'.($i-1))->applyFromArray($styleArray);
         unset($styleArray);
 
         $excel->setActiveSheetIndex(0);
